@@ -1,0 +1,14 @@
+---
+- name: Deploy App to Kubernetes
+  hosts: k8s-master
+  become: yes
+  tasks:
+    - name: Render deployment.yaml from template
+      template:
+        src: templates/deployment.yaml.j2
+        dest: /home/ubuntu/deployment.yaml
+
+    - name: Apply Kubernetes deployment
+      shell: kubectl apply -f /home/ubuntu/deployment.yaml
+      environment:
+        KUBECONFIG: /etc/kubernetes/admin.conf
